@@ -89,8 +89,8 @@ class W2B_Floating_Social_Sharing_Bar{
 		add_action( 'template_redirect', array( $this, 'w2b_add_social_sharing_buttons' ) );
 
 		/* Actication Hooks */
-		register_activation_hook( __FILE__, array( $this, $this->slug . '_install' ) );
-		register_deactivation_hook( __FILE__, array( $this, $this->slug . '_uninstall' ) );
+		register_activation_hook( __FILE__, array( $this, 'w2b_fssb_install' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'w2b_fssb_uninstall' ) );
 
 	}
 
