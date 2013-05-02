@@ -127,6 +127,9 @@ class W2B_Floating_Social_Sharing_Bar{
 		$w2b_options['w2b_enable_floating_social'] = 0; 
 		$w2b_options['w2b_social_services']        = array_map( 'strtolower', $this->social_services );
 		$w2b_options['w2b_title']                  = 'Share & Comment';
+		$w2b_options['w2b_comments_zero']          = '0 Comments';
+		$w2b_options['w2b_comments_one']           = '1 Comment';
+		$w2b_options['w2b_comments_more']          = '% Comments';
 		$w2b_options['w2b_topoffset']              = '0';
 		$w2b_options['w2b_post_classname']         = 'hentry';
 		$w2b_options['w2bBgColor']                 = 'FFFFFF';
