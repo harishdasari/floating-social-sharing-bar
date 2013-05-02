@@ -72,7 +72,8 @@ class W2B_Floating_Social_Sharing_Bar{
 		$this->title           = __( 'Floating Social Sharing Bar', 'w2b' );
 		$this->slug            = 'w2b_fssb_settings';
 		$this->setting         = 'w2b_floating_social_sharing_bar';
-		$this->social_services = array( 
+		$this->social_services = array(
+			'Title',
 			'Twitter',
 			'Facebook',
 			'Pinterest',
@@ -81,6 +82,7 @@ class W2B_Floating_Social_Sharing_Bar{
 			'LinkedIn',
 			'StumbleUpon',
 			'Buffer',
+			'Comments'
 		);
 
 		/* Actions */
@@ -124,6 +126,7 @@ class W2B_Floating_Social_Sharing_Bar{
 
 		$w2b_options['w2b_enable_floating_social'] = 0; 
 		$w2b_options['w2b_social_services']        = array_map( 'strtolower', $this->social_services );
+		$w2b_options['w2b_title']                  = 'Share & Comment';
 		$w2b_options['w2b_topoffset']              = '0';
 		$w2b_options['w2b_post_classname']         = 'hentry';
 		$w2b_options['w2bBgColor']                 = 'FFFFFF';
@@ -178,6 +181,10 @@ class W2B_Floating_Social_Sharing_Bar{
 					$new_options['w2b_social_services'][] = $service;
 			}
 		}
+		$new_options['w2b_title']      = wp_strip_all_tags( $options['w2b_title'] );
+		$new_options['w2b_comments_zero']      = wp_strip_all_tags( $options['w2b_comments_zero'] );
+		$new_options['w2b_comments_one']      = wp_strip_all_tags( $options['w2b_comments_one'] );
+		$new_options['w2b_comments_more']      = wp_strip_all_tags( $options['w2b_comments_more'] );
 		$new_options['w2b_topoffset']      = intval( $options['w2b_topoffset'] );
 		$new_options['w2b_post_classname'] = sanitize_html_class( $options['w2b_post_classname'] );
 		$new_options['w2bBgColor']         = preg_match( '/^[a-f0-9]{3,6}$/i', $options['w2bBgColor'] ) ? esc_attr( $options['w2bBgColor'] ) : 'FFFFFF';
@@ -198,6 +205,10 @@ class W2B_Floating_Social_Sharing_Bar{
 		$default = array(
 			'w2b_enable_floating_social' => '',
 			'w2b_social_services'        => array(),
+			'w2b_title'                  => '',
+			'w2b_comments_zero'          => '',
+			'w2b_comments_one'          => '',
+			'w2b_comments_more'          => '',
 			'w2b_topoffset'              => '',
 			'w2b_post_classname'         => '',
 			'w2bBgColor'                 => '',
@@ -236,6 +247,22 @@ class W2B_Floating_Social_Sharing_Bar{
 								}
 							?>
 							<p class="description"><?php _e( 'Select the Social sharing buttons you want to show on the Horizontal bar.', 'w2b' ) ?></p>
+						</td>
+					</tr>
+					<tr valing="top">
+						<th scope="row"><label for="w2b_title"><?php _e( 'Title', 'w2b' );?></label></th>
+						<td>
+							<input type="text" name="<?php echo esc_attr( $this->setting ); ?>[w2b_title]" id="w2b_title" value="<?php echo esc_attr( $w2b_title ) ?>"/>
+							<p class="description"><?php _e( '', 'w2b' ) ?></p>
+						</td>
+					</tr>
+					<tr valing="top">
+						<th scope="row"><label for=""><?php _e( 'Comment Strings', 'w2b' );?></label></th>
+						<td>
+							<input type="text" name="<?php echo esc_attr( $this->setting ); ?>[w2b_comments_zero]" id="w2b_comments_zero" size="8" value="<?php echo esc_attr( $w2b_comments_zero ) ?>"/>
+							<input type="text" name="<?php echo esc_attr( $this->setting ); ?>[w2b_comments_one]" id="w2b_comments_one" size="8" value="<?php echo esc_attr( $w2b_comments_one ) ?>"/>
+							<input type="text" name="<?php echo esc_attr( $this->setting ); ?>[w2b_comments_more]" id="w2b_comments_more" size="8" value="<?php echo esc_attr( $w2b_comments_more ) ?>"/>
+							<p class="description"><?php _e( 'Enter comments strings for Zero Comments, One Comments and More Comments', 'w2b' ) ?></p>
 						</td>
 					</tr>
 					<tr valing="top">
@@ -391,7 +418,13 @@ W2BSCRIPTS;
 			$post_url      = get_permalink( $post->ID );
 			$post_image    = $this->get_post_image();
 			
+			// OB Shit!!!!!!!!
+			ob_start();
+			comments_popup_link( $w2b_option['w2b_comments_zero'], $w2b_option['w2b_comments_one'],$w2b_option['w2b_comments_more'], 'icon-comments' );
+			$comments_link = ob_get_clean();
+
 			$social_html = array(
+				'title'       => '<td>' . esc_html( $w2b_option['w2b_title'] ) . '</td>',
 				'facebook'    => sprintf( '<td><iframe src="//www.facebook.com/plugins/like.php?href=%s&send=false&layout=button_count&width=80&show_faces=false&action=like&colorscheme=light&font&height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:21px;" allowTransparency="true"></iframe></td>', urlencode( $post_url ) ),
 				'twitter'     => sprintf( '<td><a href="https://twitter.com/share" class="twitter-share-button" data-url="%s" data-text="%s">Tweet</a></td>', esc_attr( $post_url ), esc_attr( $post_title ) ),
 				'googleplus'  => sprintf( '<td class="w2b-gplusone"><div class="g-plusone" data-size="medium" data-href="%s"></div></td>', esc_attr( $post_url ) ),
@@ -400,6 +433,7 @@ W2BSCRIPTS;
 				'pinterest'   => sprintf( '<td class="w2b-pinit"><a href="http://pinterest.com/pin/create/button/?url=%s&media=%s&description=%s" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></td>', urlencode( $post_url ), urlencode( $post_image ), urlencode( $this->get_post_excerpt( 500 ) ) ),
 				'linkedin'    => sprintf( '<td><script type="IN/Share" data-url="%s" data-counter="right"></script></td>', esc_attr( $post_url ) ),
 				'buffer'      => sprintf( '<td><a href="http://bufferapp.com/add" class="buffer-add-button" data-text="%s" data-url="%s" data-count="horizontal" data-picture="%s">Buffer</a></td>', esc_attr( $post_title ), esc_attr( $post_title ), esc_attr( $post_image ) ),
+				'comments'    => '<td>' . $comments_link . '</td>',
 			);
 			
 			$html          = "<div id=\"w2bSocialFloat\" class=\"w2bSocialFloat\">\n<table  width=\"100%\" class=\"w2bSocialFloat\">\n<tr>\n";
