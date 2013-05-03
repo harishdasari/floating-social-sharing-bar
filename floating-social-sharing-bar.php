@@ -423,20 +423,20 @@ W2BSCRIPTS;
 			
 			// OB Shit!!!!!!!!
 			ob_start();
-			comments_popup_link( $w2b_option['w2b_comments_zero'], $w2b_option['w2b_comments_one'],$w2b_option['w2b_comments_more'], 'icon-comments' );
+			comments_popup_link( $w2b_option['w2b_comments_zero'], $w2b_option['w2b_comments_one'],$w2b_option['w2b_comments_more'] );
 			$comments_link = ob_get_clean();
 
 			$social_html = array(
-				'title'       => '<td>' . esc_html( $w2b_option['w2b_title'] ) . '</td>',
-				'facebook'    => sprintf( '<td><iframe src="//www.facebook.com/plugins/like.php?href=%s&send=false&layout=button_count&width=80&show_faces=false&action=like&colorscheme=light&font&height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:21px;" allowTransparency="true"></iframe></td>', urlencode( $post_url ) ),
-				'twitter'     => sprintf( '<td><a href="https://twitter.com/share" class="twitter-share-button" data-url="%s" data-text="%s">Tweet</a></td>', esc_attr( $post_url ), esc_attr( $post_title ) ),
-				'googleplus'  => sprintf( '<td class="w2b-gplusone"><div class="g-plusone" data-size="medium" data-href="%s"></div></td>', esc_attr( $post_url ) ),
-				'stumbleupon' => sprintf( '<td><su:badge layout="1" location="%s"></su:badge></td>', esc_attr( $post_url ) ),
-				'digg'        => '<td><a class="DiggThisButton DiggCompact"></a></td>',
-				'pinterest'   => sprintf( '<td class="w2b-pinit"><a href="http://pinterest.com/pin/create/button/?url=%s&media=%s&description=%s" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></td>', urlencode( $post_url ), urlencode( $post_image ), urlencode( $this->get_post_excerpt( 500 ) ) ),
-				'linkedin'    => sprintf( '<td><script type="IN/Share" data-url="%s" data-counter="right"></script></td>', esc_attr( $post_url ) ),
-				'buffer'      => sprintf( '<td><a href="http://bufferapp.com/add" class="buffer-add-button" data-text="%s" data-url="%s" data-count="horizontal" data-picture="%s">Buffer</a></td>', esc_attr( $post_title ), esc_attr( $post_title ), esc_attr( $post_image ) ),
-				'comments'    => '<td>' . $comments_link . '</td>',
+				'title'       => '<td class="share-title">' . esc_html( $w2b_option['w2b_title'] ) . '</td>',
+				'facebook'    => sprintf( '<td class="share-facebook"><iframe src="//www.facebook.com/plugins/like.php?href=%s&send=false&layout=button_count&width=80&show_faces=false&action=like&colorscheme=light&font&height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:80px; height:21px;" allowTransparency="true"></iframe></td>', urlencode( $post_url ) ),
+				'twitter'     => sprintf( '<td class="share-twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-url="%s" data-text="%s">Tweet</a></td>', esc_attr( $post_url ), esc_attr( $post_title ) ),
+				'googleplus'  => sprintf( '<td class="share-gplusone"><div class="g-plusone" data-size="medium" data-href="%s"></div></td>', esc_attr( $post_url ) ),
+				'stumbleupon' => sprintf( '<td class="share-stumble"><su:badge layout="1" location="%s"></su:badge></td>', esc_attr( $post_url ) ),
+				'digg'        => '<td class="share-digg"><a class="DiggThisButton DiggCompact"></a></td>',
+				'pinterest'   => sprintf( '<td class="share-pinit"><a href="http://pinterest.com/pin/create/button/?url=%s&media=%s&description=%s" class="pin-it-button" count-layout="horizontal"><img border="0" src="//assets.pinterest.com/images/PinExt.png" title="Pin It" /></a></td>', urlencode( $post_url ), urlencode( $post_image ), urlencode( $this->get_post_excerpt( 500 ) ) ),
+				'linkedin'    => sprintf( '<td class="share-linkedin"><script type="IN/Share" data-url="%s" data-counter="right"></script></td>', esc_attr( $post_url ) ),
+				'buffer'      => sprintf( '<td class="share-buffer"><a href="http://bufferapp.com/add" class="buffer-add-button" data-text="%s" data-url="%s" data-count="horizontal" data-picture="%s">Buffer</a></td>', esc_attr( $post_title ), esc_attr( $post_title ), esc_attr( $post_image ) ),
+				'comments'    => '<td class="share-comments">' . $comments_link . '</td>',
 			);
 			
 			$html          = "<div id=\"w2bSocialFloat\" class=\"w2bSocialFloat\">\n<table  width=\"100%\" class=\"w2bSocialFloat\">\n<tr>\n";
@@ -490,10 +490,10 @@ W2BSCRIPTS;
 	max-width:82px;
 	width:82px !important;
 }
-#w2bSocialFloat td.w2b-gplusone *{
+#w2bSocialFloat td.share-gplusone *{
 	max-width:80px !important;
 }
-#w2bSocialFloat td.w2b-pinit > a {
+#w2bSocialFloat td.share-pinit > a {
 	vertical-align:top !important;
 }
 #w2bSocialFloat.w2bFloatSocial{
